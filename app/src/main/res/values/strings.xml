@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">final_project</string>
+    <string name="title">Заметки</string>
+    <string name="empty">Пусто</string>
+    <string name="add">+</string>
+    <string name="note_title">Название заметки</string>
+    <string name="note_text">Текст заметки</string>
+    <string name="note_date">30.11.2025</string>
+    <string name="hint1">Введите заголовок</string>
+    <string name="hint2">Введите текст заметки…</string>
+</resources>
