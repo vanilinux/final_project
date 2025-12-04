@@ -13,6 +13,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
     private List<Note> notesList;
     public interface OnItemClickListener {
+        void onItemClick(int position);
         void onDeleteClick(int position);
     }
 
@@ -42,6 +43,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         holder.notePreview.setText(note.getContent());
         holder.noteDate.setText(note.getDate());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    int adapterPosition = holder.getAdapterPosition();
+                    if (adapterPosition != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(adapterPosition);
+                    }
+                }
+            }
+        });
+
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +79,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     }
 
     public Note getNoteAt(int position) {
-        return notesList.get(position);
+        if (position >= 0 && position < notesList.size()) {
+            return notesList.get(position);
+        }
+        return null;
     }
 
     public static class NoteViewHolder extends RecyclerView.ViewHolder {

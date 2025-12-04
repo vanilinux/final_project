@@ -15,6 +15,9 @@ public class CreateNoteActivity extends AppCompatActivity {
     private ImageButton saveButton;
     private ImageButton cancelButton;
 
+    private boolean isEditMode = false;
+    private int noteId = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,8 @@ public class CreateNoteActivity extends AppCompatActivity {
         contentEditText = findViewById(R.id.contentEditText);
         saveButton = findViewById(R.id.imageButton2);
         cancelButton = findViewById(R.id.imageButton1);
+
+        checkEditMode();
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +43,23 @@ public class CreateNoteActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void checkEditMode() {
+        Intent intent = getIntent();
+        if (intent.hasExtra("NOTE_ID")) {
+            isEditMode = true;
+            noteId = intent.getIntExtra("NOTE_ID", -1);
+            String title = intent.getStringExtra("NOTE_TITLE");
+            String content = intent.getStringExtra("NOTE_CONTENT");
+
+            titleEditText.setText(title);
+            contentEditText.setText(content);
+
+            setTitle("Редактировать заметку");
+        } else {
+            setTitle("Новая заметка");
+        }
     }
 
     private void saveNote() {
@@ -60,10 +82,12 @@ public class CreateNoteActivity extends AppCompatActivity {
         resultIntent.putExtra("title", title);
         resultIntent.putExtra("content", content);
 
+        if (isEditMode) {
+            resultIntent.putExtra("note_id", noteId);
+        }
+
         setResult(RESULT_OK, resultIntent);
-
         Toast.makeText(this, "Заметка сохранена", Toast.LENGTH_SHORT).show();
-
         finish();
     }
 }

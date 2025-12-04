@@ -75,6 +75,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return notes;
     }
 
+    public int updateNote(Note note) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.NoteEntry.COLUMN_TITLE, note.getTitle());
+        values.put(DatabaseContract.NoteEntry.COLUMN_CONTENT, note.getContent());
+        values.put(DatabaseContract.NoteEntry.COLUMN_DATE, note.getDate());
+
+        int rowsAffected = db.update(
+                DatabaseContract.NoteEntry.TABLE_NAME,
+                values,
+                DatabaseContract.NoteEntry.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(note.getId())}
+        );
+
+        db.close();
+        return rowsAffected;
+    }
     public void deleteNote(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(DatabaseContract.NoteEntry.TABLE_NAME,
